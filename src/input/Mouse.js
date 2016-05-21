@@ -47,6 +47,11 @@ Phaser.Mouse = function (game) {
     this.mouseUpCallback = null;
 
     /**
+    * @property {function} mouseMoveCallback - A callback that can be fired when the mouse is moved
+    */
+    this.mouseMoveCallback = null;
+
+    /**
     * @property {function} mouseOutCallback - A callback that can be fired when the mouse is no longer over the game canvas.
     */
     this.mouseOutCallback = null;
@@ -237,6 +242,10 @@ Phaser.Mouse.prototype = {
             return _this.onMouseMove(event);
         };
 
+        this._onMouseMoveGlobal = function (event) {
+            return _this.onMouseMoveGlobal(event);
+        };
+
         this._onMouseUp = function (event) {
             return _this.onMouseUp(event);
         };
@@ -263,6 +272,7 @@ Phaser.Mouse.prototype = {
 
         var canvas = this.game.canvas;
 
+        window.addEventListener('mousemove', this._onMouseMoveGlobal, true);
         canvas.addEventListener('mousedown', this._onMouseDown, true);
         canvas.addEventListener('mousemove', this._onMouseMove, true);
         canvas.addEventListener('mouseup', this._onMouseUp, true);
@@ -351,6 +361,27 @@ Phaser.Mouse.prototype = {
 
         this.input.mousePointer.move(event);
 
+    },
+
+    /**
+     * The internal method that handles the mouse move event from the window.
+     *
+     * @method Phaser.Mouse#onMouseMoveGlobal
+     * @param {MouseEvent} event - The native event from the browser. This gets stored in Mouse.event.
+     */
+    onMouseMoveGlobal : function (event) {
+        if (this.input.mousePointer.withinGame) return;
+
+        this.event = event;
+
+        if (this.mouseMoveCallback)
+        {
+            this.mouseMoveCallback.call(this.callbackContext, event);
+        }
+
+        event['identifier'] = 0;
+
+        this.input.mousePointer.move(event);
     },
 
     /**
