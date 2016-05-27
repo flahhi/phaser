@@ -111,8 +111,16 @@ Phaser.Mouse = function (game) {
     */
     this.pointerLock = new Phaser.Signal();
 
+    /**
+     * @property {Phaser.Signal} onMouseUpGlobalSignal - This event is dispatched when the mouse up out of game AND within game.
+     * @default
+     */
     this.onMouseUpGlobalSignal = new Phaser.Signal();
 
+    /**
+     * @property {Phaser.Signal} onMouseMoveGlobalSignal - This event is dispatched when the mouse move out of game AND within game.
+     * @default
+     */
     this.onMouseMoveGlobalSignal = new Phaser.Signal();
 
     /**
