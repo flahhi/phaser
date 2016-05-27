@@ -111,6 +111,10 @@ Phaser.Mouse = function (game) {
     */
     this.pointerLock = new Phaser.Signal();
 
+    this.onMouseUpGlobalSignal = new Phaser.Signal();
+
+    this.onMouseMoveGlobalSignal = new Phaser.Signal();
+
     /**
     * The browser mouse DOM event. Will be null if no mouse event has ever been received.
     * Access this property only inside a Mouse event handler and do not keep references to it.
@@ -347,8 +351,11 @@ Phaser.Mouse.prototype = {
             event.preventDefault();
         }
 
+        this.onMouseMoveGlobalSignal.dispatch();
+
         if (this.mouseMoveCallback)
         {
+
             this.mouseMoveCallback.call(this.callbackContext, event);
         }
 
@@ -370,18 +377,20 @@ Phaser.Mouse.prototype = {
      * @param {MouseEvent} event - The native event from the browser. This gets stored in Mouse.event.
      */
     onMouseMoveGlobal : function (event) {
-        if (this.input.mousePointer.withinGame) return;
+        if (!this.input.mousePointer.withinGame) {
 
-        this.event = event;
+            this.event = event;
 
-        if (this.mouseMoveCallback)
-        {
-            this.mouseMoveCallback.call(this.callbackContext, event);
+            this.onMouseMoveGlobalSignal.dispatch();
+
+            if (this.mouseMoveCallback) {
+                this.mouseMoveCallback.call(this.callbackContext, event);
+            }
+
+            event['identifier'] = 0;
+
+            this.input.mousePointer.move(event);
         }
-
-        event['identifier'] = 0;
-
-        this.input.mousePointer.move(event);
     },
 
     /**
@@ -397,6 +406,8 @@ Phaser.Mouse.prototype = {
         {
             event.preventDefault();
         }
+
+        this.onMouseUpGlobalSignal.dispatch();
 
         if (this.mouseUpCallback)
         {
@@ -421,11 +432,11 @@ Phaser.Mouse.prototype = {
     * @param {MouseEvent} event - The native event from the browser. This gets stored in Mouse.event.
     */
     onMouseUpGlobal: function (event) {
+        if (!this.input.mousePointer.withinGame) {
 
-        if (!this.input.mousePointer.withinGame)
-        {
-            if (this.mouseUpCallback)
-            {
+            this.onMouseUpGlobalSignal.dispatch();
+
+            if (this.mouseUpCallback) {
                 this.mouseUpCallback.call(this.callbackContext, event);
             }
 
@@ -433,7 +444,6 @@ Phaser.Mouse.prototype = {
 
             this.input.mousePointer.stop(event);
         }
-
     },
 
     /**
@@ -654,6 +664,7 @@ Phaser.Mouse.prototype = {
 
         window.removeEventListener('mouseup', this._onMouseUpGlobal, true);
         window.removeEventListener('mouseout', this._onMouseOutGlobal, true);
+        window.removeEventListener('mousemove', this._onMouseMoveGlobal, true);
 
         document.removeEventListener('pointerlockchange', this._pointerLockChange, true);
         document.removeEventListener('mozpointerlockchange', this._pointerLockChange, true);

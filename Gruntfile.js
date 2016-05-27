@@ -29,6 +29,19 @@ module.exports = function (grunt) {
     grunt.registerTask('docs', ['clean:docs', 'pixidoc', 'jsdoc:html', 'replace:docs', 'clean:out']);
     grunt.registerTask('tsdocs', ['clean:out', 'pixidoc', 'gitclone:plugins', 'jsdoc:json', 'buildtsdoc:pixi', 'buildtsdoc:phaser', 'replace:phasertsdefheader', 'clean:out']);
 
+
+    grunt.registerTask('flahhi_phasersweet_spil_release', 'build custom RELEASE phaser for p2-physics games (spil: without text etc.)', function() {
+
+        grunt.option('exclude', 'debug,ninja,gamepad,keyboard,text,bitmaptext,retrofont,rope,tilesprite,flexgrid,arcade,tilemaps,particles,video');
+        grunt.option('filename', 'phasersweet_spil_r');
+        grunt.option('sourcemap', false);
+        grunt.option('copy', false);
+        grunt.option('uglify', true);
+
+        grunt.task.run('custom');
+
+    });
+
     grunt.registerTask('custom', 'Build a custom version of Phaser', function(arg) {
 
         var modules = {
@@ -219,7 +232,7 @@ module.exports = function (grunt) {
                 //  3) PIXI
 
                 grunt.log.writeln("-> PIXI");
-                
+
                 if (!excludedKeys['intro'])
                 {
                     tasks.push('concat:pixiIntro');
@@ -228,7 +241,7 @@ module.exports = function (grunt) {
 
                 tasks.push('concat:pixiMain');
                 pixiFilelist.push('<%= modules_dir %>/pixi-main.js');
-                
+
                 //  Optional Rope
                 if (!excludedKeys['rope'])
                 {
@@ -292,7 +305,7 @@ module.exports = function (grunt) {
                 //  3) PIXI
 
                 grunt.log.writeln("-> PIXI");
-                
+
                 if (!excludedKeys['intro'])
                 {
                     tasks.push('concat:pixiIntro');
@@ -301,7 +314,7 @@ module.exports = function (grunt) {
 
                 tasks.push('concat:pixiMain');
                 filelist.push('<%= modules_dir %>/pixi-main.js');
-                
+
                 //  Optional Rope
                 if (!excludedKeys['rope'])
                 {
