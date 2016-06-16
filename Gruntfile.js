@@ -83,6 +83,7 @@ module.exports = function (grunt) {
             'p2':               { 'description': 'P2 Physics',                                  'optional': true, 'stub': false },
             'tilemaps':         { 'description': 'Tilemap Support',                             'optional': true, 'stub': false },
             'particles':        { 'description': 'Arcade Physics Particle System',              'optional': true, 'stub': true },
+            'weapon':           { 'description': 'Arcade Physics Weapon Plugin',                'optional': true, 'stub': false },
             'creature':         { 'description': 'Creature Animation Tool Support',             'optional': true, 'stub': false },
             'video':            { 'description': 'Video Game Object',                           'optional': true, 'stub': false },
             'pixidefs':         { 'description': 'Pixi defaults',                               'optional': true, 'stub': false },
@@ -175,6 +176,12 @@ module.exports = function (grunt) {
                 {
                     grunt.log.writeln("Warning: Particles rely on Arcade Physics which has been excluded. Removing Particles from build.");
                     excludes.push('particles');
+                }
+
+                if (excludedKeys['arcade'] && !excludedKeys['weapon'])
+                {
+                    grunt.log.writeln("Warning: The Weapon Plugin relies on Arcade Physics which has been excluded. Removing Weapon Plugin from build.");
+                    excludes.push('weapon');
                 }
 
                 if (excludedKeys['rendertexture'] && !excludedKeys['retrofont'])
@@ -507,7 +514,7 @@ module.exports = function (grunt) {
 
     });
 
-    grunt.registerTask('arcadephysics', 'Phaser with Arcade Physics, Tilemaps and Particles', function() {
+    grunt.registerTask('arcadephysics', 'Phaser with Arcade Physics, Tilemaps, Weapons and Particles', function() {
 
         grunt.option('exclude', 'ninja,p2,creature');
         grunt.option('filename', 'phaser-arcade-physics');
@@ -535,7 +542,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('nophysics', 'Phaser without physics, tilemaps or particles', function() {
 
-        grunt.option('exclude', 'arcade,ninja,p2,tilemaps,particles,creature');
+        grunt.option('exclude', 'arcade,ninja,p2,tilemaps,particles,creature,weapon');
         grunt.option('filename', 'phaser-no-physics');
         grunt.option('sourcemap', true);
         grunt.option('copy', false);
@@ -548,7 +555,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('minimum', 'Phaser without any optional modules', function() {
 
-        grunt.option('exclude', 'gamepad,keyboard,bitmapdata,graphics,rendertexture,text,bitmaptext,retrofont,net,tweens,sound,debug,arcade,ninja,p2,tilemaps,particles,creature,video,rope,tilesprite');
+        grunt.option('exclude', 'gamepad,keyboard,bitmapdata,graphics,rendertexture,text,bitmaptext,retrofont,net,tweens,sound,debug,arcade,ninja,p2,tilemaps,particles,creature,video,rope,tilesprite,weapon');
         grunt.option('filename', 'phaser-minimum');
         grunt.option('sourcemap', true);
         grunt.option('copy', false);

@@ -520,6 +520,7 @@ declare module PIXI {
         children: DisplayObject[];
         height: number;
         width: number;
+        ignoreChildInput: boolean;
 
         addChild(child: DisplayObject): DisplayObject;
         addChildAt(child: DisplayObject, index: number): DisplayObject;
@@ -637,7 +638,7 @@ declare module PIXI {
         drawShape(shape: Ellipse): GraphicsData;
         drawShape(shape: Polygon): GraphicsData;
         endFill(): Graphics;
-        generateTexture(resolution?: number, scaleMode?: number, padding?: number): Texture;
+        generateTexture(resolution?: number, scaleMode?: number, padding?: number): RenderTexture;
         lineStyle(lineWidth?: number, color?: number, alpha?: number): Graphics;
         lineTo(x: number, y: number): Graphics;
         moveTo(x: number, y: number): Graphics;
