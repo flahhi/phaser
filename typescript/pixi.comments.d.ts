@@ -65,7 +65,7 @@ declare module PIXI {
     export function autoDetectRecommendedRenderer(width?: number, height?: number, options?: PixiRendererOptions): PixiRenderer;
 
     export function canUseNewCanvasBlendModes(): boolean;
-    export function getNextPowerOfTwo(number: number): number;
+    export function getNextPowerOfTwo(value: number): number;
 
     export function AjaxRequest(): XMLHttpRequest;
 
@@ -74,7 +74,7 @@ declare module PIXI {
 
 
     export interface IEventCallback {
-        (e?: IEvent): void
+        (e?: IEvent): void;
     }
 
     export interface IEvent {
@@ -87,7 +87,7 @@ declare module PIXI {
     }
 
     export interface IInteractionDataCallback {
-        (interactionData: InteractionData): void
+        (interactionData: InteractionData): void;
     }
 
     export interface PixiRenderer {
@@ -740,11 +740,11 @@ declare module PIXI {
     }
 
     export class ColorMatrixFilter extends AbstractFilter {
-        
+
         constructor();
-        
+
         matrix: number[];
-        
+
     }
 
     export class ColorStepFilter extends AbstractFilter {
@@ -888,13 +888,18 @@ declare module PIXI {
         * The position of the Display Object based on the world transform.
         * This value is updated at the end of updateTransform and takes all parent transforms into account.
         */
-        worldPosition: PIXI.Point;
+        worldPosition: Point;
 
         /**
         * The scale of the Display Object based on the world transform.
         * This value is updated at the end of updateTransform and takes all parent transforms into account.
         */
-        worldScale: PIXI.Point;
+        worldScale: Point;
+
+        /**
+        * [read-only] Current transform of the object based on world (parent) factors
+        */
+        worldTransform: Matrix;
 
         /**
         * The rotation of the Display Object, in radians, based on the world transform.
@@ -943,7 +948,7 @@ declare module PIXI {
         * @param renderer The renderer used to generate the texture.
         * @return a texture of the graphics object
         */
-        generateTexture(resolution?: number, scaleMode?: number, renderer?: PixiRenderer): RenderTexture;
+        generateTexture(resolution?: number, scaleMode?: number, renderer?: PixiRenderer | number): RenderTexture;
         mousedown(e: InteractionData): void;
         mouseout(e: InteractionData): void;
         mouseover(e: InteractionData): void;
@@ -1937,7 +1942,7 @@ declare module PIXI {
         constructor(...points: Point[]);
         constructor(...points: number[]);
 
-        points: any[]; //number[] Point[]
+        points: any[];
 
         clone(): Polygon;
         contains(x: number, y: number): boolean;
@@ -2098,6 +2103,12 @@ declare module PIXI {
         blendMode: blendModes;
 
         /**
+        * Controls if this Sprite is processed by the core Phaser game loops and Group loops.
+        * Default: true
+        */
+        exists: boolean;
+
+        /**
         * The shader that will be used to render the texture to the stage. Set to null to remove a current shader.
         * Default: null
         */
@@ -2203,7 +2214,7 @@ declare module PIXI {
             TRIANGLE_STRIP: number;
             TRIANGLES: number;
 
-        }
+        };
 
 
         /**
@@ -2728,7 +2739,7 @@ declare module PIXI {
         * @param webGL -
         * @param type -
         */
-        static switchMode(webGL: WebGLRenderingContext, type: number): any; //WebGLData
+        static switchMode(webGL: WebGLRenderingContext, type: number): any;
 
         /**
         * Builds a rectangle to draw
@@ -3104,7 +3115,7 @@ declare module PIXI {
         * The number of images in the SpriteBatch before it flushes
         */
         size: number;
-        sprites: any[]; //todo Sprite[]?
+        sprites: any[];
 
         /**
         * Holds the vertices
@@ -3278,7 +3289,7 @@ declare module PIXI {
 
     }
 
-    //SPINE
+    // SPINE
 
     export class BoneData {
 
@@ -3612,7 +3623,7 @@ declare module PIXI {
             rgb888: number;
             rgba8888: number;
 
-        }
+        };
 
         static TextureFilter: {
 
@@ -3624,7 +3635,7 @@ declare module PIXI {
             mipMapNearestLinear: number;
             mipMapLinearLinear: number;
 
-        }
+        };
 
         static textureWrap: {
 
@@ -3632,7 +3643,7 @@ declare module PIXI {
             clampToEdge: number;
             repeat: number;
 
-        }
+        };
 
         constructor(atlasText: string, textureLoader: AtlasLoader);
 
