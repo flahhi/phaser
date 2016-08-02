@@ -42,11 +42,6 @@ Phaser.Sound = function (game, key, volume, loop, connect) {
     this.loop = loop;
 
     /**
-    * @property {number} volume - The sound or sound marker volume. A value between 0 (silence) and 1 (full volume).
-    */
-    this.volume = volume;
-
-    /**
     * @property {object} markers - The sound markers.
     */
     this.markers = {};
@@ -550,7 +545,7 @@ Phaser.Sound.prototype = {
                 {
                     this._sound.disconnect(this.externalNode);
                 }
-                else
+                else if (this.gainNode)
                 {
                     this._sound.disconnect(this.gainNode);
                 }
@@ -888,7 +883,7 @@ Phaser.Sound.prototype = {
                 {
                     this._sound.disconnect(this.externalNode);
                 }
-                else
+                else if (this.gainNode)
                 {
                     this._sound.disconnect(this.gainNode);
                 }
@@ -1157,8 +1152,7 @@ Object.defineProperty(Phaser.Sound.prototype, "mute", {
 
 /**
 * @name Phaser.Sound#volume
-* @property {number} volume - Gets or sets the volume of this sound, a value between 0 and 1.
-* @readonly
+* @property {number} volume - Gets or sets the volume of this sound, a value between 0 and 1. The value given is clamped to the range 0 to 1.
 */
 Object.defineProperty(Phaser.Sound.prototype, "volume", {
 
