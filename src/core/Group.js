@@ -1180,34 +1180,34 @@ Phaser.Group.prototype.setProperty = function (child, key, value, operation, for
     if (len === 1)
     {
         if (operation === 0) { child[key[0]] = value; }
-        else if (operation == 1) { child[key[0]] += value; }
-        else if (operation == 2) { child[key[0]] -= value; }
-        else if (operation == 3) { child[key[0]] *= value; }
-        else if (operation == 4) { child[key[0]] /= value; }
+        else if (operation === 1) { child[key[0]] += value; }
+        else if (operation === 2) { child[key[0]] -= value; }
+        else if (operation === 3) { child[key[0]] *= value; }
+        else if (operation === 4) { child[key[0]] /= value; }
     }
     else if (len === 2)
     {
         if (operation === 0) { child[key[0]][key[1]] = value; }
-        else if (operation == 1) { child[key[0]][key[1]] += value; }
-        else if (operation == 2) { child[key[0]][key[1]] -= value; }
-        else if (operation == 3) { child[key[0]][key[1]] *= value; }
-        else if (operation == 4) { child[key[0]][key[1]] /= value; }
+        else if (operation === 1) { child[key[0]][key[1]] += value; }
+        else if (operation === 2) { child[key[0]][key[1]] -= value; }
+        else if (operation === 3) { child[key[0]][key[1]] *= value; }
+        else if (operation === 4) { child[key[0]][key[1]] /= value; }
     }
     else if (len === 3)
     {
         if (operation === 0) { child[key[0]][key[1]][key[2]] = value; }
-        else if (operation == 1) { child[key[0]][key[1]][key[2]] += value; }
-        else if (operation == 2) { child[key[0]][key[1]][key[2]] -= value; }
-        else if (operation == 3) { child[key[0]][key[1]][key[2]] *= value; }
-        else if (operation == 4) { child[key[0]][key[1]][key[2]] /= value; }
+        else if (operation === 1) { child[key[0]][key[1]][key[2]] += value; }
+        else if (operation === 2) { child[key[0]][key[1]][key[2]] -= value; }
+        else if (operation === 3) { child[key[0]][key[1]][key[2]] *= value; }
+        else if (operation === 4) { child[key[0]][key[1]][key[2]] /= value; }
     }
     else if (len === 4)
     {
         if (operation === 0) { child[key[0]][key[1]][key[2]][key[3]] = value; }
-        else if (operation == 1) { child[key[0]][key[1]][key[2]][key[3]] += value; }
-        else if (operation == 2) { child[key[0]][key[1]][key[2]][key[3]] -= value; }
-        else if (operation == 3) { child[key[0]][key[1]][key[2]][key[3]] *= value; }
-        else if (operation == 4) { child[key[0]][key[1]][key[2]][key[3]] /= value; }
+        else if (operation === 1) { child[key[0]][key[1]][key[2]][key[3]] += value; }
+        else if (operation === 2) { child[key[0]][key[1]][key[2]][key[3]] -= value; }
+        else if (operation === 3) { child[key[0]][key[1]][key[2]][key[3]] *= value; }
+        else if (operation === 4) { child[key[0]][key[1]][key[2]][key[3]] /= value; }
     }
 
     return true;
@@ -1498,40 +1498,37 @@ Phaser.Group.prototype.callbackFromArray = function (child, callback, length) {
 
     //  Kinda looks like a Christmas tree
 
-    if (length == 1)
+    if (length === 1)
     {
         if (child[callback[0]])
         {
             return child[callback[0]];
         }
     }
-    else if (length == 2)
+    else if (length === 2)
     {
         if (child[callback[0]][callback[1]])
         {
             return child[callback[0]][callback[1]];
         }
     }
-    else if (length == 3)
+    else if (length === 3)
     {
         if (child[callback[0]][callback[1]][callback[2]])
         {
             return child[callback[0]][callback[1]][callback[2]];
         }
     }
-    else if (length == 4)
+    else if (length === 4)
     {
         if (child[callback[0]][callback[1]][callback[2]][callback[3]])
         {
             return child[callback[0]][callback[1]][callback[2]][callback[3]];
         }
     }
-    else
+    else if (child[callback])
     {
-        if (child[callback])
-        {
-            return child[callback];
-        }
+        return child[callback];
     }
 
     return false;
@@ -2711,11 +2708,6 @@ Object.defineProperty(Phaser.Group.prototype, "angle", {
 * It is derived by calling `getBounds`, calculating the Groups dimensions based on its
 * visible children.
 * 
-* Note that no ancestors are factored into the result, meaning that if this Group is 
-* nested within another Group, with heavy transforms on it, the result of this property 
-* is likely to be incorrect. It is safe to get and set this property if the Group is a
-* top-level descendant of Phaser.World, or untransformed parents.
-*
 * @name Phaser.Group#centerX
 * @property {number} centerX
 */
@@ -2723,13 +2715,13 @@ Object.defineProperty(Phaser.Group.prototype, "centerX", {
 
     get: function () {
 
-        return this.getBounds().centerX;
+        return this.getBounds(this.parent).centerX;
 
     },
 
     set: function (value) {
 
-        var r = this.getBounds();
+        var r = this.getBounds(this.parent);
         var offset = this.x - r.x;
 
         this.x = (value + offset) - r.halfWidth;
@@ -2744,11 +2736,6 @@ Object.defineProperty(Phaser.Group.prototype, "centerX", {
 * It is derived by calling `getBounds`, calculating the Groups dimensions based on its
 * visible children.
 * 
-* Note that no ancestors are factored into the result, meaning that if this Group is 
-* nested within another Group, with heavy transforms on it, the result of this property 
-* is likely to be incorrect. It is safe to get and set this property if the Group is a
-* top-level descendant of Phaser.World, or untransformed parents.
-*
 * @name Phaser.Group#centerY
 * @property {number} centerY
 */
@@ -2756,13 +2743,13 @@ Object.defineProperty(Phaser.Group.prototype, "centerY", {
 
     get: function () {
 
-        return this.getBounds().centerY;
+        return this.getBounds(this.parent).centerY;
 
     },
 
     set: function (value) {
 
-        var r = this.getBounds();
+        var r = this.getBounds(this.parent);
         var offset = this.y - r.y;
 
         this.y = (value + offset) - r.halfHeight;
@@ -2777,11 +2764,6 @@ Object.defineProperty(Phaser.Group.prototype, "centerY", {
 * It is derived by calling `getBounds`, calculating the Groups dimensions based on its
 * visible children.
 * 
-* Note that no ancestors are factored into the result, meaning that if this Group is 
-* nested within another Group, with heavy transforms on it, the result of this property 
-* is likely to be incorrect. It is safe to get and set this property if the Group is a
-* top-level descendant of Phaser.World, or untransformed parents.
-*
 * @name Phaser.Group#left
 * @property {number} left
 */
@@ -2789,13 +2771,13 @@ Object.defineProperty(Phaser.Group.prototype, "left", {
 
     get: function () {
 
-        return this.getBounds().left;
+        return this.getBounds(this.parent).left;
 
     },
 
     set: function (value) {
 
-        var r = this.getBounds();
+        var r = this.getBounds(this.parent);
         var offset = this.x - r.x;
 
         this.x = value + offset;
@@ -2809,11 +2791,6 @@ Object.defineProperty(Phaser.Group.prototype, "left", {
 *
 * It is derived by calling `getBounds`, calculating the Groups dimensions based on its
 * visible children.
-* 
-* Note that no ancestors are factored into the result, meaning that if this Group is 
-* nested within another Group, with heavy transforms on it, the result of this property 
-* is likely to be incorrect. It is safe to get and set this property if the Group is a
-* top-level descendant of Phaser.World, or untransformed parents.
 *
 * @name Phaser.Group#right
 * @property {number} right
@@ -2822,13 +2799,13 @@ Object.defineProperty(Phaser.Group.prototype, "right", {
 
     get: function () {
 
-        return this.getBounds().right;
+        return this.getBounds(this.parent).right;
 
     },
 
     set: function (value) {
 
-        var r = this.getBounds();
+        var r = this.getBounds(this.parent);
         var offset = this.x - r.x;
 
         this.x = (value + offset) - r.width;
@@ -2842,11 +2819,6 @@ Object.defineProperty(Phaser.Group.prototype, "right", {
 *
 * It is derived by calling `getBounds`, calculating the Groups dimensions based on its
 * visible children.
-* 
-* Note that no ancestors are factored into the result, meaning that if this Group is 
-* nested within another Group, with heavy transforms on it, the result of this property 
-* is likely to be incorrect. It is safe to get and set this property if the Group is a
-* top-level descendant of Phaser.World, or untransformed parents.
 *
 * @name Phaser.Group#top
 * @property {number} top
@@ -2855,13 +2827,13 @@ Object.defineProperty(Phaser.Group.prototype, "top", {
 
     get: function () {
 
-        return this.getBounds().top;
+        return this.getBounds(this.parent).top;
 
     },
 
     set: function (value) {
 
-        var r = this.getBounds();
+        var r = this.getBounds(this.parent);
         var offset = this.y - r.y;
 
         this.y = (value + offset);
@@ -2876,11 +2848,6 @@ Object.defineProperty(Phaser.Group.prototype, "top", {
 * It is derived by calling `getBounds`, calculating the Groups dimensions based on its
 * visible children.
 * 
-* Note that no ancestors are factored into the result, meaning that if this Group is 
-* nested within another Group, with heavy transforms on it, the result of this property 
-* is likely to be incorrect. It is safe to get and set this property if the Group is a
-* top-level descendant of Phaser.World, or untransformed parents.
-*
 * @name Phaser.Group#bottom
 * @property {number} bottom
 */
@@ -2888,13 +2855,13 @@ Object.defineProperty(Phaser.Group.prototype, "bottom", {
 
     get: function () {
 
-        return this.getBounds().bottom;
+        return this.getBounds(this.parent).bottom;
 
     },
 
     set: function (value) {
 
-        var r = this.getBounds();
+        var r = this.getBounds(this.parent);
         var offset = this.y - r.y;
 
         this.y = (value + offset) - r.height;

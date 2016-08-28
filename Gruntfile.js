@@ -33,7 +33,7 @@ module.exports = function (grunt) {
     grunt.registerTask('flahhi_phasersweet_spil_release', 'build custom RELEASE phaser for p2-physics games (spil: without text etc.)', function() {
 
         grunt.option('exclude', 'debug,ninja,gamepad,keyboard,text,retrofont,rope,tilesprite,flexgrid,arcade,tilemaps,particles,video');
-        grunt.option('filename', 'phaser_flahhi_v2.7_beta');
+        grunt.option('filename', 'phaser_flahhi_v2.6.2');
         grunt.option('sourcemap', false);
         grunt.option('copy', false);
         grunt.option('uglify', true);
@@ -496,6 +496,18 @@ module.exports = function (grunt) {
         grunt.option('sourcemap', false);
         grunt.option('copy', false);
         grunt.option('uglify', false);
+
+        grunt.task.run('custom');
+
+    });
+
+    grunt.registerTask('uglytest', 'Phaser Test Build (all libs)', function() {
+
+        grunt.option('exclude', 'ninja,creature');
+        grunt.option('filename', 'phaser-test');
+        grunt.option('sourcemap', false);
+        grunt.option('copy', false);
+        grunt.option('uglify', true);
 
         grunt.task.run('custom');
 

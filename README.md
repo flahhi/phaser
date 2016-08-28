@@ -38,11 +38,13 @@ Grab the source and join in the fun!
 
 <div align="center"><img src="http://phaser.io/images/github/news.jpg"></div>
 
-> In Development
+> 26th August 2016
 
-This is the development branch, where we are building Phaser 2.7.0.
+Summer is nearly over, the nights are drawing in, and the Phaser releases continue. After enjoying a short break in August, we're back with Phaser 2.6.2. This is mostly a maintenance release, with a lot of attention paid to clearing bugs, and improving features. There's also some significant updates to our fork of Pixi, setting the scene for the next iteration of Phaser.
 
-Check the [Change Log](#change-log) to see what we've done so far. Or switch to the master branch for the current stable release.
+Check the [Change Log](#change-log) for the complete list of what's new and updated.
+
+With 2.6.2 out, we'll now turn our attention to merging in all of the renderer updates we've built over the past few months. They are going to form the basis of the Phaser 3.0 release. The bump in version number due to the dramatic internal changes we're making. Follow our progress in the Phaser World newsletter for details. It's going to be an exciting September for sure :)
 
 As always, keep you eyes on the Phaser web site, and subscribe to our weekly [newsletter](#newsletter). You can also follow me on [Twitter](https://twitter.com/photonstorm) or chat to me in the Phaser [Slack](http://phaser.io/community/slack) channel.
 
@@ -107,15 +109,15 @@ Using Browserify? Please [read this](#browserify).
 
 [jsDelivr](http://www.jsdelivr.com/#!phaser) is a "super-fast CDN for developers". Include the following in your html:
 
-`<script src="//cdn.jsdelivr.net/phaser/2.7.0/phaser.js"></script>`
+`<script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.js"></script>`
 
 or the minified version:
 
-`<script src="//cdn.jsdelivr.net/phaser/2.7.0/phaser.min.js"></script>`
+`<script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>`
 
 [cdnjs.com](https://cdnjs.com/libraries/phaser) also offers a free CDN service. They have all versions of Phaser and even the custom builds:
 
-`<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.7.0/phaser.js"></script>`
+`<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.js"></script>`
 
 ### Phaser Sandbox
 
@@ -156,7 +158,7 @@ As well as the [book](http://phaser.io/interphase) you get all the source code, 
 
 ### Phaser Editor - A complete Phaser Editor
 
-[Phaser Editor](http://phasereditor.boniatillo.com/) is a brand new Eclipse based editor that offers lots of built-in tools specifically for Phaser developers. Handy features include Smart code auto-completion, built-in web server, documentation search, asset management, texture atlas creator, audio sprite creator, asset previews and lots more.
+[Phaser Editor](http://phaser.io/shop/apps/phaser-editor) is a brand new Eclipse based editor that offers lots of built-in tools specifically for Phaser developers. Handy features include Smart code auto-completion, built-in web server, documentation search, asset management, texture atlas creator, audio sprite creator, asset previews and lots more.
 
 ### Game Mechanic Explorer
 
@@ -305,11 +307,10 @@ You can read all about the philosophy behind Lazer [here](http://phaser.io/news/
 ![Change Log](http://phaser.io/images/github/div-change-log.png "Change Log")
 <a name="change-log"></a>
 
-## Version 2.7.0 - "Kore Springs" - In Development
+## Version 2.6.2 - "Kore Springs" - 26th August 2016
 
 ### New Features
 
-* The brand new WebGL Tilemap Renderer is available in this release of Phaser. Using custom developed shaders, map parsing and index batching, it finally makes tilemap rendering as fast as it possibly can be in WebGL.
 * Group.getRandomExists will return a random child from the Group that has exists set to true.
 * Group.getAll will return all children in the Group, or a section of the Group, with the optional ability to test if the child has a property matching the given value or not.
 * Group.iterate has a new `returnType`: `RETURN_ALL`. This allows you to return all children that pass the iteration test in an array.
@@ -319,8 +320,8 @@ You can read all about the philosophy behind Lazer [here](http://phaser.io/news/
 
 ### Updates
 
-* TypeScript definitions fixes and updates (thanks @calvindavis)
-* Docs typo fixes (thanks @rroylance @Owumaro @boniatillo-com)
+* TypeScript definitions fixes and updates (thanks @calvindavis @AlvaroBarua)
+* Docs typo fixes (thanks @rroylance @Owumaro @boniatillo-com @samme @kjav)
 * The InputHandler.flagged property has been removed. It was never used internally, or exposed via the API, so was just overhead.
 * The src/system folder has been removed and all files relocated to the src/utils folder. This doesn't change anything from an API point of view, but did change the grunt build scripts slightly.
 * BitmapData.shadow and BitmapData.text now both `return this` keeping them in-line with the docs (thanks @greeny #2634)
@@ -331,7 +332,12 @@ You can read all about the philosophy behind Lazer [here](http://phaser.io/news/
 * Phaser.Tileset has a new property `lastgid` which is populated automatically by the TilemapParser when importing Tiled map data, or can be set manually if building your own tileset.
 * Stage will now check if `document.hidden` is available first, and if it is then never even check for the prefixed versions. This stops warnings like "mozHidden and mozVisibilityState are deprecated" in newer versions of browsers and retain backward compatibility (thanks @leopoldobrines7 #2656)
 * As a result of changes in #2573 Graphics objects were calling `updateLocalBounds` on any shape change, which could cause dramatic performances drops in Graphics heavy situations (#2618). Graphics objects now have a new flag `_boundsDirty` which is used to detect if the bounds have been invalidated, i.e. by a Graphics being cleared or drawn to. If this is set to true then `updateLocalBounds` is called once in the `postUpdate` method (thanks @pengchuan #2618)
-
+* Phaser.Image now has the ScaleMinMax component.
+* Animations now allow for speeds greater than 0, rather than forcing them to be greater than 1. This allows you to have animation speeds slower than 1 frame per second (thanks @jayrobin #2664)
+* Weapon.fire and all related methods (fireAtXY, fireAtPointer, fireAtSprite) now all return the instance of the Phaser.Bullet that was fired, or `null` if nothing was fired. Previously it would return a boolean, but this change allows you to perform additional processing on the Bullet as required (thanks @JTronLabs #2696)
+* Sound.loopFull now returns the Sound instance that was looped (thanks @hilts-vaughan #2697)
+* ArcadePhysics Body.rotation now reads its initial value from sprite.angle instead of sprite.rotation. The property was immediately replaced with the correct value in Body.preUpdate regardless, but it keeps it consistent (thanks @samme #2708)
+* Weapon.fire now tracks rotation properly, when using an offset and tracking a sprite (thanks @bobonthenet #2672)
 
 ### Bug Fixes
 
@@ -339,19 +345,17 @@ You can read all about the philosophy behind Lazer [here](http://phaser.io/news/
 * Weapon.autofire wouldn't fire after the first bullet, or until `fire` was called, neither of which are requirements. If you now set this boolean the Weapon will fire continuously until you toggle it back to false (thanks @alverLopez #2647)
 * ArcadePhysics.World.angleBetweenCenters now uses `centerX` and `centerY` properties to check for the angle between, instead of `center.x/y` as that property no longer exists (thanks @leopoldobrines7 #2654)
 * The Emitter.makeParticles `collide` argument didn't work, as a result of #2661, but is now properly respected thanks to that change (thanks @samme #2662)
+* Sound.play would throw the error "Uncaught DOMException: Failed to execute 'disconnect' on 'AudioNode': the given destination is not connected." in Chrome, if you tried to play an audio marker that didn't exist, while a valid marker was already playing.
+* Text bounds would incorrectly displace if the Text resolution was greater than 1 (thanks @valent-novem #2685)
+* TilemapParser would calculate widthInPixels and heightInPixels were being read incorrectly from JSON data (capitalisation of properties) (thanks @hexus #2691)
+* A tinted Texture in Canvas mode wouldn't be updated properly if it was also cropped, beyond the initial crop. Now a cropped texture will re-tint itself every time the crop is updated, and has changed (thanks @phoenixyjll #2688)
+* The Weapon.fireRateVariance property was never taken into account internally. It's now applied to the firing rate correctly (thanks @noseglid #2715)
+* Text.updateText now sets `Text.dirty = false`, which stops Text objects from having `updateText` called twice on them after creation.
 
 ### Pixi Updates
 
 Please note that Phaser uses a custom build of Pixi and always has done. The following changes have been made to our custom build, not to Pixi in general.
 
-* Multi-Texture support has now been built into our version of Pixi. This can offer dramatic performance increases in WebGL games on GPUs that support multiple texture bindings (which is most of them these days).
-* WebGLRenderer.setTexturePriority is the method used to set the priority of textures when the GPU supports multi-texture batching.
-* Rope has two new properties `textureIndices` and `textureIndex` to handle multi-texture support.
-* Strip has two new properties `textureIndices` and `textureIndex` to handle multi-texture support.
-* The following shaders have all been updated to support multi-textures: `ComplexPrimitiveShader`, `PixiFastShader`, `PixiShader`, `PrimitiveShader`, `StripShader`.
-* WebGLFastSpriteBatch.vertSize was increased from 10 to 11.
-* BaseTexture.textureIndex is a new property that controls the index of the texture within the GPU texture cache. Usually you don't change this yourself, and use `renderer.setTexturePriority` instead, but the property is public and available for more advanced use-cases.
-* CanvasRenderer.setTexturePriority is an empty function, but included to allow you to simply call `game.renderer.setTexturePriority` without first having to wrap that in a WebGL check.
 * This version contains significant fixes for `DisplayObject.getBounds` and `DisplayObjectContainer.getBounds`. The methods can now accept an optional argument `targetCoordinateSpace` which makes it much more flexible, allowing you to check the bounds against any target, not just local and global ones. If the `targetCoordinateSpace` is a valid DisplayObject:
 
     - If it's a parent of the caller at some level it will return the bounds
@@ -361,8 +365,7 @@ Please note that Phaser uses a custom build of Pixi and always has done. The fol
     relative to the targetCoordinateSpace DisplayObject.
 
 As a result this also fixes how empty Groups are treated when they have no other children except Groups. So now calculations are correct.
-* DisplayObjectContainer.contains(child) is a new method which determines whether the specified display object is a child of the DisplayObjectContainer instance or the instance itself. This method is
-used in the new getBounds function.
+* DisplayObjectContainer.contains(child) is a new method which determines whether the specified display object is a child of the DisplayObjectContainer instance or the instance itself. This method is used in the new getBounds function.
 * Corrected DisplayObjects default `_bounds` rect from (0, 0, 1, 1) to (0, 0, 0, 0).
 * Thanks to @fmflame for his hard work on the above (#2639 #2627)
 * The methods `setStageReference` and `removeStageReference` have been removed from all Pixi classes. Objects no longer have `stage` properties, or references to the Stage object. This is because no reference to the Stage is required for any calculations, and Phaser can only have 1 Stage, so adding and removing references to it were superfluous actions.
@@ -401,10 +404,10 @@ All rights reserved.
 
 [![Analytics](https://ga-beacon.appspot.com/UA-44006568-2/phaser/index)](https://github.com/igrigorik/ga-beacon)
 
-[get-js]: https://github.com/photonstorm/phaser/releases/download/v2.7.0/phaser.js
-[get-minjs]: https://github.com/photonstorm/phaser/releases/download/v2.7.0/phaser.min.js
-[get-zip]: https://github.com/photonstorm/phaser/archive/v2.7.0.zip
-[get-tgz]: https://github.com/photonstorm/phaser/archive/v2.7.0.tar.gz
+[get-js]: https://github.com/photonstorm/phaser/releases/download/v2.6.2/phaser.js
+[get-minjs]: https://github.com/photonstorm/phaser/releases/download/v2.6.2/phaser.min.js
+[get-zip]: https://github.com/photonstorm/phaser/archive/v2.6.2.zip
+[get-tgz]: https://github.com/photonstorm/phaser/archive/v2.6.2.tar.gz
 [clone-http]: https://github.com/photonstorm/phaser.git
 [clone-ssh]: git@github.com:photonstorm/phaser.git
 [clone-svn]: https://github.com/photonstorm/phaser
